@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/header') %>
+<head>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body class="colorful-bg">
+  <div class="container">
+    <h1 class="title">Work Tasks</h1>
+    <div class="task-container">
+      <% if (locals.quests) { %>
+        <ol class="task-list">
+          <% quests.forEach((element, index) => { %>
+            <form action="/work/delete" method="POST" class="task-form">
+              <li class="task-item <%= element.completed ? 'completed' : '' %>">
+                <!-- Add a checkbox to mark completion status -->
+                <input
+                  type="checkbox"
+                  name="<%= 'completed-' + element._id %>"
+                  data-task-id="<%= element._id %>"
+                  <% if (element.completed) { %>checked<% } %>
+                  class="checkbox-input"
+                  onchange="handleCheckboxChange(this)"
+                />
+                <% if (element.completed) { %>
+                  <del><%= element.quest %></del>
+                <% } else { %>
+                  <%= element.quest %>
+                <% } %>
+                <input type="hidden" name="index" value="<%= index %>" />
+                <button type="submit" class="delete-btn"><i class="fa-solid fa-eraser"></i></button>
+              </li>
+            </form>
+          <% }); %>
+        </ol>
+      <% } %>
+
+      <form action="/work/add" method="POST" class="add-form">
+        <input type="text" placeholder="Enter new task" name="quest" class="add-input" />
+        <input type="submit" value="+" class="add-btn" />
+      </form>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+
+  <!-- Include your Bootstrap script if needed -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
